@@ -1,3 +1,4 @@
+const { GoatWrapper } = require("fca-liane-utils");
 const axios = require("axios");
 
 const serverCategories = {
@@ -29,7 +30,7 @@ module.exports = {
     role: 0,
     author: "Nyx",
     description: "Advanced Album System",
-    category: "media",
+    category: "MEDIA",
     countDown: 5,
     guide: { en: "{p}album [add/list] [category]" }
   },
@@ -72,9 +73,9 @@ module.exports = {
         
         if (!categoryInput) {
           const formattedList = listRes.data.map(cat =>
-            `✨ ${cat.category} (${cat.total_videos} videos)`
+            `📂 ${cat.category} (${cat.total_videos} videos)`
           ).join("\n");
-          return api.sendMessage(`🐤 All Categories:\n\n${formattedList}`, event.threadID, event.messageID);
+          return api.sendMessage(`📁 All Categories:\n\n${formattedList}`, event.threadID, event.messageID);
         }
         
         const categoryKey = Object.keys(serverCategories).find(key => key.toLowerCase() === categoryInput);
@@ -92,9 +93,9 @@ module.exports = {
       
       const response = await axios.get('https://album-source-production.up.railway.app/album-list');
       const categories = response.data;
-      const message = "🐣🎀 Available Categories:\n\n" +
-        categories.map((cat, index) => `${index + 1}. ${cat.category} (${cat.total_videos} videos)`).join("\n") +
-        "\n\n👉 Reply with number to select";
+      const message = "╭━━━━━━━━✘━━━━━━━━━☺︎︎ 			┣‣ Available Categories:\n╭━━━━━━━━✘━━━━━━━━━☺︎︎\n" +
+        categories.map((cat, index) => `┣‣${index + 1}: ${cat.category}= [${cat.total_videos}]`).join("\n") +
+        "\n╰━━━━━━━━✘━━━━━━━━━☺︎︎\┣‣ Reply with number to select		 ╰━━━━━━━━✘━━━━━━━━━☺︎︎ ";
       
       await api.sendMessage(message, event.threadID, (error, info) => {
         global.GoatBot.onReply.set(info.messageID, {
@@ -134,3 +135,5 @@ module.exports = {
     }
   }
 };
+const wrapper = new GoatWrapper(module.exports);
+wrapper.applyNoPrefix({ allowPrefix: true });
