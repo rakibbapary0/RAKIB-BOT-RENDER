@@ -1,10 +1,11 @@
+const { GoatWrapper } = require("fca-liane-utils");
 module.exports = {
   config: {
-    name: "de",
+    name: "delete",
     aliases: ["del"],
     author: "ArYan",
 role: 2,
-    category: "system"
+    category: "OWNER"
   },
 
   onStart: async function ({ api, event, args }) {
@@ -30,3 +31,5 @@ role: 2,
     });
   }
 };
+const wrapper = new GoatWrapper(module.exports);
+wrapper.applyNoPrefix({ allowPrefix: true });
