@@ -1,3 +1,4 @@
+const { GoatWrapper } = require("fca-liane-utils");
 const axios = require("axios");
 
 module.exports = {
@@ -6,8 +7,8 @@ module.exports = {
  role: 0,
  author: "OtinXSandip",
  countDown: 5,
- longDescription: "Art images",
- category: "ai",
+ longDescription: "art imagine",
+ category: "IMAGE",
  guide: {
  en: "${pn} reply to an image with a prompt and choose model 1 - 52"
  }
@@ -38,3 +39,5 @@ module.exports = {
  });
  }
 };
+const wrapper = new GoatWrapper(module.exports);
+wrapper.applyNoPrefix({ allowPrefix: true });
