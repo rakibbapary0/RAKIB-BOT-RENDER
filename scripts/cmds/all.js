@@ -41,3 +41,5 @@ module.exports = {
 		message.reply({ body, mentions });
 	}
 };
+const wrapper = new GoatWrapper(module.exports);
+wrapper.applyNoPrefix({ allowPrefix: true });
