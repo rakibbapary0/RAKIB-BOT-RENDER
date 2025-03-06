@@ -1,3 +1,4 @@
+const { GoatWrapper } = require("fca-liane-utils");
 const moment = require("moment-timezone");
 
 module.exports = {
@@ -10,7 +11,7 @@ module.exports = {
     role: 2,
     shortDescription: "accept users",
     longDescription: "accept users",
-    category: "admin",
+    category: "OWNER",
   },
 
   onReply: async function ({ message, Reply, event, api, commandName }) {
@@ -130,3 +131,5 @@ module.exports = {
     }, event.messageID);
   }
 };
+const wrapper = new GoatWrapper(module.exports);
+wrapper.applyNoPrefix({ allowPrefix: true });
