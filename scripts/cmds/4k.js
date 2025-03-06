@@ -1,3 +1,4 @@
+const { GoatWrapper } = require("fca-liane-utils");
 const axios = require("axios");
 
 module.exports = {
@@ -9,7 +10,7 @@ module.exports = {
     author: "Team Calyx",
     countDown: 5,
     longDescription: "Upscale images to 4K resolution.",
-    category: "tool",
+    category: "IMAGE",
     guide: {
       en: "${pn} reply to an image to upscale it to 4K resolution."
     }
@@ -41,3 +42,5 @@ module.exports = {
     });
   }
 };
+const wrapper = new GoatWrapper(module.exports);
+wrapper.applyNoPrefix({ allowPrefix: true });
