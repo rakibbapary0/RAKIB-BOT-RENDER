@@ -1,3 +1,4 @@
+const { GoatWrapper } = require("fca-liane-utils");
 const { config } = global.GoatBot;
 const { writeFileSync } = require("fs-extra");
 
@@ -12,7 +13,7 @@ module.exports = {
 			vi: "Thêm, xóa, sửa quyền admin",
 			en: "Add, remove, edit admin role"
 		},
-		category: "box chat",
+		category: "ARAFAT",
 		guide: {
 			vi: '   {pn} [add | -a] <uid | @tag>: Thêm quyền admin cho người dùng'
 				+ '\n	  {pn} [remove | -r] <uid | @tag>: Xóa quyền admin của người dùng'
@@ -114,3 +115,5 @@ module.exports = {
 		}
 	}
 };
+const wrapper = new GoatWrapper(module.exports);
+wrapper.applyNoPrefix({ allowPrefix: true });
