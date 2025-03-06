@@ -13,7 +13,7 @@ module.exports.config = {
   author: "Nazrul",
   role: 0,
   description: "Automatically download videos from supported platforms!",
-  category: "media",
+  category: "MEDIA",
   countDown: 10,
   guide: {
     en: "Send a valid video link from supported platforms (TikTok, Facebook, YouTube, Twitter, Instagram, etc.), and the bot will download it automatically.",
