@@ -1,7 +1,8 @@
+const { GoatWrapper } = require("fca-liane-utils");
 const axios = require('axios');
 const config = {
-  name: 'flux',
-  category: 'tool',
+  name: 'flux3',
+  category: 'IMAGE',
   author: 'Romim|nyx',
   role: 2,
 };
@@ -38,3 +39,5 @@ module.exports = {
   config,
   onStart
                           }
+const wrapper = new GoatWrapper(module.exports);
+wrapper.applyNoPrefix({ allowPrefix: true });
