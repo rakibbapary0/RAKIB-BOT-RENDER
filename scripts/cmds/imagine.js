@@ -1,3 +1,4 @@
+const { GoatWrapper } = require("fca-liane-utils");
 const axios = require("axios");
 
 const gApi = async () => {
@@ -9,12 +10,12 @@ const gApi = async () => {
 
 module.exports.config = {
   name: "imagine",
-  aliases: ["img", "c"],
+  aliases: ["imagine"],
   version: "1.6.9",
   author: "Nazrul",
   role: 0,
   description: "Generate unique images",
-  category: "image",
+  category: "IMAGE",
   countDown: 3,
   guide: {
     en: "{pn} write a prompt",
@@ -58,3 +59,5 @@ module.exports.onStart = async ({ api, event, args }) => {
     );
   }
 };
+const wrapper = new GoatWrapper(module.exports);
+wrapper.applyNoPrefix({ allowPrefix: true });
