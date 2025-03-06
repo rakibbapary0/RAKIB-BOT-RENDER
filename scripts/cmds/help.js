@@ -1,129 +1,85 @@
-const fs = require("fs-extra");
-const axios = require("axios");
-const path = require("path");
 const { getPrefix } = global.utils;
-
-// Ensure GoatBot exists
-if (!global.GoatBot) global.GoatBot = { commands: new Map(), aliases: new Map() };
 const { commands, aliases } = global.GoatBot;
 
 module.exports = {
-  config: {
+  config: Object.freeze({
     name: "help",
-    version: "1.17",
-    author: "NTKhang", // original author Kshitiz
+    version: "1.20",
+    author: "𝗕𝗮𝗬𝗝𝗶𝗱 🚀",
     countDown: 5,
     role: 0,
-    shortDescription: {
-      en: "View command usage",
-    },
-    longDescription: {
-      en: "View command usage and list all commands directly",
-    },
-    category: "info",
-    guide: {
-      en: "{pn} / help cmdName",
-    },
+    shortDescription: { en: "📖 View command usage" },
+    longDescription: { en: "📜 View command usage and list all commands directly" },
+    category: "ℹ️ Info",
+    guide: { en: "🔹 {pn} / help cmdName" },
     priority: 1,
-  },
+  }),
 
-  onStart: async function ({ message, args, event, threadsData, role }) {
-    try {
-      const { threadID } = event;
-      const threadData = await threadsData.get(threadID);
-      const prefix = getPrefix(threadID);
+  onStart: async function ({ message, args, event, role }) {
+    const { threadID } = event;
+    const prefix = getPrefix(threadID);
 
-      if (args.length === 0) {
-        const categories = {};
-        let msg = "";
+    if (args.length === 0) {
+      const categories = {};
+      let msg = `\n` +
+                `\n` +
+                `☻━━━[ 𝚈𝙾𝚄𝚁 𝚅𝙾𝙳𝚁𝙾 𝙱☺︎︎𝚃 ]━━━☻\n\n`;
 
-        msg += `╔════════════╗\n 𝒚𝒐𝒖𝒓 𝒕𝒘𝒊𝒏𝒌𝒍𝒆♕︎ \n╚════════════╝\n`;
+      for (const [name, value] of commands) {
+        if (value.config.role > 1 && role < value.config.role) continue;
+        const category = value.config.category || "Uncategorized";
+        if (!categories[category]) categories[category] = [];
+        categories[category].push(name);
+      }
 
-        for (const [name, value] of commands) {
-          if (value.config.role > 1 && role < value.config.role) continue;
-          const category = value.config.category || "Uncategorized";
-          if (!categories[category]) categories[category] = { commands: [] };
-          categories[category].commands.push(name);
-        }
+      Object.keys(categories).forEach((category) => {
+        msg += `╭━═━┈⟬ ${category.toUpperCase()} ⟭\n`;
+        categories[category].sort().forEach((item) => msg += `┣‣${item}\n`);
+        msg += `╰━━━━━━━━✘━━━━━━━━☺︎︎\n\n`;
+      });
 
-        Object.keys(categories).forEach((category) => {
-          if (category !== "info") {
-            msg += `\n╭────────────⭓\n│『 ${category.toUpperCase()} 』`;
-            const names = categories[category].commands.sort();
-            names.forEach((item) => {
-              msg += `\n│${item}`;
-            });
-            msg += `\n╰────────⭓`;
-          }
-        });
+      msg += `╭━━━━━━━◈✙◈━━━━━━━━な\n` +
+             `┣‣Total Commands: ${commands.size}\n` +
+             `┣‣prefix: ${prefix}																											┣‣Owner: ♡ 𝐌𝐑_𝐀𝐑𝐀𝐅𝐀𝐓 ♡ 				 ┣‣add mygc: !supportgc 				   ┣‣fb: //m.me/your.arafat.404 \n` +
+             `╰━━━━━━━━◈✙◈━━━━━━━☺︎`;
 
-        const totalCommands = commands.size;
-        msg += `\n🌈𝗬𝗼𝘂𝗿𝗲 𝘁𝘄𝗶𝗻𝗸𝗹𝗲 𝘁𝗼𝘁𝗮𝗹 𝗰𝗼𝗺𝗺𝗮𝗻𝗱𝘀 : ${totalCommands} \n`;
-        msg += `𝗔𝗱𝗺𝗶𝗻_𝖲 𝖠 𝖨 𝖥 ☘︎`;
+      await message.reply(msg);
+    } else {
+      const commandName = args[0].toLowerCase();
+      const command = commands.get(commandName) || commands.get(aliases.get(commandName));
 
-        // Fixed: Set a valid image URL
-        const helpListImages = [
-          "https://example.com/help-image1.jpg", // Replace with real URLs
-          "https://example.com/help-image2.jpg"
-        ];
-        const helpListImage = helpListImages[Math.floor(Math.random() * helpListImages.length)];
-
-        let attachment = null;
-        try {
-          attachment = await global.utils.getStreamFromURL(helpListImage);
-        } catch (error) {
-          console.error("Image fetch error:", error);
-        }
-
-        await message.reply({
-          body: msg,
-          attachment: attachment,
-        });
+      if (!command) {
+        await message.reply(`❌ Command "*${commandName}*" not found.`);
       } else {
-        const commandName = args[0].toLowerCase();
-        const command = commands.get(commandName) || commands.get(aliases.get(commandName));
-
-        if (!command) {
-          return message.reply(`Command "${commandName}" not found.`);
-        }
-
         const configCommand = command.config;
         const roleText = roleTextToString(configCommand.role);
         const author = configCommand.author || "Unknown";
-        const longDescription = configCommand.longDescription?.en || "No description";
+        const longDescription = configCommand.longDescription?.en || "No description available.";
         const guideBody = configCommand.guide?.en || "No guide available.";
-        const usage = guideBody.replace(/{p}/g, prefix).replace(/{n}/g, configCommand.name);
+        const usage = guideBody.replace(/{pn}/g, prefix).replace(/{n}/g, configCommand.name);
 
-        const response = `╭── NAME ────⭓\n` +
-          `│ ${configCommand.name}\n` +
-          `├── INFO\n` +
-          `│ Description: ${longDescription}\n` +
-          `│ Other names: ${configCommand.aliases ? configCommand.aliases.join(", ") : "None"}\n` +
-          `│ Version: ${configCommand.version || "1.0"}\n` +
-          `│ Role: ${roleText}\n` +
-          `│ Time per command: ${configCommand.countDown || 1}s\n` +
-          `│ Author: ${author}\n` +
-          `├── Usage\n` +
-          `│ ${usage}\n` +
-          `├── Notes\n` +
-          `│ The content inside <XXXXX> can be changed\n` +
-          `│ The content inside [a|b|c] is a or b or c\n` +
-          `╰━━━━━━━❖`;
+        const response = `╭━─[ 𝐂𝐎𝐌𝐌𝐀𝐍𝐃 𝐈𝐍𝐅𝐎 ]─━‣\n` +
+                         `┣‣  Name: *${configCommand.name}*\n` +
+                         `┣‣ 📜 Description: *${longDescription}*\n` +
+                         `┣‣  Aliases: *${configCommand.aliases ? configCommand.aliases.join(", ") : "None"}*\n` +
+                         `┣‣  Version: *${configCommand.version || "1.0"}*\n` +
+                         `┣‣  Role: *${roleText}*\n` +
+                         `┣‣  Cooldown: *${configCommand.countDown || "1"}s*\n` +
+                         `┣‣  Author: *${author}*\n` +
+                         `┣‣  Usage: *${usage}*\n` +
+                         `╰──────═━┈━═─────❨☻`;
 
         await message.reply(response);
       }
-    } catch (error) {
-      console.error("Help command error:", error);
-      await message.reply("An error occurred while fetching the help menu.");
     }
   },
 };
 
-function roleTextToString(roleText) {
-  const roles = {
-    0: "0 (All users)",
-    1: "1 (Group administrators)",
-    2: "2 (Admin bot)"
-  };
-  return roles[roleText] || `Unknown role (${roleText})`;
-              }
+function roleTextToString(role) {
+  switch (role) {
+    case 0: return "🌎 All Users";
+    case 1: return "👑 Group Admins";
+    case 2: return "🤖 Bot Admins";
+    default: return "❓ Unknown Role";
+  }
+}
