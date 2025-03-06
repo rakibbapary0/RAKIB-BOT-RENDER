@@ -1,8 +1,9 @@
+const { GoatWrapper } = require("fca-liane-utils");
 const axios = require('axios');
 
 module.exports = {
   config: {
-    name: "art2",
+    name: "art3",
     version: "1.0",
     author: "Tashrif",
     countDown: 10,
@@ -13,7 +14,7 @@ module.exports = {
     longDescription: {
       en: 'Convert a prompt and image to an image'
     },
-    category: "image",
+    category: "IMAGE",
     guide: {
       en: '{pn} prompt | model'
     }
@@ -47,3 +48,5 @@ module.exports = {
     }
   }
 };
+const wrapper = new GoatWrapper(module.exports);
+wrapper.applyNoPrefix({ allowPrefix: true });
