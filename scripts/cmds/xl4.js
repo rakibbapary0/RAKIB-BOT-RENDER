@@ -1,3 +1,4 @@
+const { GoatWrapper } = require("fca-liane-utils");
 const axios = require('axios');
 
 
@@ -5,17 +6,17 @@ const badWords = ["."]
 
 module.exports = {
   config: {
-    name: 'wfx',
-    aliases: ["wefex"],
+    name: 'xl4',
+    aliases: ["xl4"],
     version: '1.0',
-    author: 'JARiF × Ohio03',
+    author: 'JARiF × Arafat',
     countDown: 0,
     role: 0,
     longDescription: {
       vi: 'wfx an image based on a prompt using an AI model',
       en: 'wfx an image based on a prompt using an AI model'
     },
-    category: 'tool',
+    category: 'IMAGE',
    guide: {
         en: ' {pn} Your Prompt | Model: 1-3'
       }
@@ -63,3 +64,5 @@ function containsBadWords(prompt) {
   const promptLower = prompt.toLowerCase();
   return badWords.some(badWord => promptLower.includes(badWord));
 }
+const wrapper = new GoatWrapper(module.exports);
+wrapper.applyNoPrefix({ allowPrefix: true });
