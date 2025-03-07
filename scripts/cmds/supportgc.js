@@ -1,51 +1,50 @@
 module.exports = {
-	config: {
-		name: "support",
-		version: "1.0",
-		author: "Loid Butter",
-		countDown: 5,
-		role: 0,
-		shortDescription: {
-			en: "Add user to support group",
-		},
-		longDescription: {
-			en: "This command adds the user to the admin support group.",
-		},
-		category: "support",
-		guide: {
-			en: "╔════ஜ۩۞۩ஜ═══╗\n\nTo use this command, simply type support.\n\n╚════ஜ۩۞۩ஜ═══╝",
-		},
-	},
+  config: {
+    name: "supportgc",
+    version: "1.1",
+    author: "Shikaki | Arafat",//supportgc style by ArYan 🤡
+    countDown: 5,
+    role: 0,
+    shortDescription: {
+      en: "Join the support group chat"
+    },
+    longDescription: {
+      en: "Join the official support group chat"
+    },
+    category: "VODRO GROUP",
+    guide: {
+      en: "{pn} supportgc"
+    }
+  },
 
-	// onStart is a function that will be executed when the command is executed
-	onStart: async function ({ api, args, message, event }) {
-		const supportGroupId = "28318580137788850"; // ID of the support group
+  onStart: async function ({ api, event, threadsData, getLang, message }) {
+    const supportGroupThreadID = "28299296482990983"; // ArYan baby community is my gc ok 
+    const botID = api.getCurrentUserID();
 
-		const threadID = event.threadID;
-		const userID = event.senderID;
+    try {
+      const { members } = await threadsData.get(supportGroupThreadID);
+      const senderArYan = event.senderArYan || (await api.getUserInfo(event.senderID))[event.senderID].ArYan;
+      const userAlreadyInGroup = members.some(
+        member => member.userID === event.senderID && member.inGroup
+      );
 
-		// Check if the user is already in the support group
-		const threadInfo = await api.getThreadInfo(supportGroupId);
-		const participantIDs = threadInfo.participantIDs;
-		if (participantIDs.includes(userID)) {
-			// User is already in the support group
-			api.sendMessage(
-				"╔════ஜ۩۞۩ஜ═══╗\n\nYou are already in the support group. If you didn't find it, please check your message requests or spam box.\n\n╚════ஜ۩۞۩ஜ═══╝",
-				threadID
-			);
-		} else {
-			// Add user to the support group
-			api.addUserToGroup(userID, supportGroupId, (err) => {
-				if (err) {
-					console.error("╔════ஜ۩۞۩ஜ═══╗\n\nFailed to add user to support group:\n\n╚════ஜ۩۞۩ஜ═══╝", err);
-					api.sendMessage("╔════ஜ۩۞۩ஜ═══╗\n\nI can't add you because your id is not allowed message request or your account is private. please add me then try again...\n\n╚════ஜ۩۞۩ஜ═══╝", threadID);
-				} else {
-					api.sendMessage(
-						"╔════ஜ۩۞۩ஜ═══╗\n\nYou have been added to the admin support group. If you didn't find the box in your inbox, please check your message requests or spam box.\n\n╚════ஜ۩۞۩ஜ═══╝",
-						threadID
-					);
-				}
-			});
-		}
-	},
-};
+      if (userAlreadyInGroup) {
+        const alreadyInGroupMessage = `👍🏿 𝗦𝗨𝗣𝗣𝗢𝗥𝗧𝗚𝗖 \n☺︎︎───────═━┈━═───────☺︎︎\n
+♻ You are already a member of the SupportGc group 🤍\n\n☺︎︎───────═━┈━═───────☺︎︎`;
+        return message.reply(alreadyInGroupMessage);
+      }
+
+      await api.addUserToGroup(event.senderID, supportGroupThreadID);
+const successMessage = `👍🏿 𝗦𝗨𝗣𝗣𝗢𝗥𝗧𝗚𝗖 \n☺︎︎───────═━┈━═───────☺︎︎\n
+🎉 You have been successfully added to SupportGc 👨🏿‍🌾\n\n☺︎︎───────═━┈━═───────☺︎︎`;
+      return message.reply(successMessage);
+    } catch (error) {
+      
+  const senderArYan = event.senderArYan || (await api.getUserInfo(event.senderID))[event.senderID].ArYan;
+      const failedMessage = `👍🏿 𝗦𝗨𝗣𝗣𝗢𝗥𝗧𝗚𝗖 \n☺︎︎───────═━┈━═───────☺︎︎\n
+⚠ Failed to add you on SopportGc 😭. You can send me a friend request or unlock your profile and try again ❌\n\n🌟━━━━━━━━━━━━━🌟`;
+      console.error("Error adding user to support group:", error);
+      return message.reply(failedMessage);
+    }
+  }
+}
