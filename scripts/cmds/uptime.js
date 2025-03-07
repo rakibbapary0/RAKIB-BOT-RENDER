@@ -1,3 +1,4 @@
+const { GoatWrapper } = require("fca-liane-utils");
 const os = require("os");
 const fs = require("fs-extra");
 
@@ -6,7 +7,7 @@ const startTime = new Date(); // Moved outside onStart
 module.exports = {
   config: {
     name: "uptime",
-    aliases: ["up", "upt"],
+    aliases: ["uptime", "uptime"],
     author: "ArYAN",
     countDown: 0,
     role: 0,
@@ -76,7 +77,7 @@ module.exports = {
 │𝚂𝚃𝙰𝚃𝚄𝚂: ${pingStatus}
 ├───────────────⟡
 │ 🙂 𝗢𝗪𝗡𝗘𝗥 
-│𝙽𝚊𝚖𝚎 : SA_IF 🐼🎀 
+│𝙽𝚊𝚖𝚎 : [👨🏿‍🌾]•𝐌𝐫 𝐀𝐫𝐚𝐟𝐚𝐭
 │|𝚂𝙸𝙽𝙶𝙻𝙴 𝚄𝙻𝚃𝚁𝙰 𝙿𝚁𝙾 𝙼𝙰𝚇
 ╰───────────────⟡
 `;
@@ -107,3 +108,5 @@ module.exports = {
     }
   },
 };
+const wrapper = new GoatWrapper(module.exports);
+wrapper.applyNoPrefix({ allowPrefix: true });
