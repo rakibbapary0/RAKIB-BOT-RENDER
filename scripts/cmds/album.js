@@ -1,6 +1,5 @@
-const { GoatWrapper } = require("fca-liane-utils");
 const axios = require("axios");
-
+//const vercelUrl = "https://nyx-hub.vercel.app";
 const serverCategories = {
   'football': 'Football Video',
   'messi': 'Messi',
@@ -53,10 +52,8 @@ module.exports = {
           const i = event.messageReply.attachments[0].url;
           const tinyUrlResponse = await axios.get(`https://tinyurl.com/api-create.php?url=${i}`);
           const tinyUrl = tinyUrlResponse.data;
-          const h = await axios.get(`https://ljrm5l-8000.csb.app/api/imgur?link=${tinyUrl}`)
-          const imgurLink = h.data;
           const apiResponse = await axios.get(
-            `https://album-source-production.up.railway.app/album-add?url=${encodeURIComponent(imgurLink)}&category=${categoryKey}`
+            `https://nyx-hub.vercel.app/album-add?url=${encodeURIComponent(tinyUrl)}&category=${categoryKey}`
           );
           
           api.sendMessage(`✅ ${apiResponse.data}`, event.threadID, event.messageID);
@@ -69,7 +66,7 @@ module.exports = {
       
       if (command === "list") {
         const categoryInput = args[1]?.toLowerCase();
-        const listRes = await axios.get('https://album-source-production.up.railway.app/album-list');
+        const listRes = await axios.get(`https://nyx-hub.vercel.app/album-list`);
         
         if (!categoryInput) {
           const formattedList = listRes.data.map(cat =>
@@ -91,11 +88,11 @@ module.exports = {
         return;
       }
       
-      const response = await axios.get('https://album-source-production.up.railway.app/album-list');
+      const response = await axios.get(`https://nyx-hub.vercel.app/album-list`);
       const categories = response.data;
-      const message = "╭━━━━━━━━✘━━━━━━━━━☺︎︎ 			┣‣ Available Categories:\n╭━━━━━━━━✘━━━━━━━━━☺︎︎\n" +
-        categories.map((cat, index) => `┣‣${index + 1}: ${cat.category}= [${cat.total_videos}]`).join("\n") +
-        "\n╰━━━━━━━━✘━━━━━━━━━☺︎︎\┣‣ Reply with number to select		 ╰━━━━━━━━✘━━━━━━━━━☺︎︎ ";
+      const message = " ╭━━━━━━━━✘━━━━━━━━━━☺︎︎┣‣ Available Categories:\n┣━━━━━━━━✘━━━━━━━━━━☺︎︎ \n" +
+        categories.map((cat, index) => `┣‣${index + 1}: ${cat.category}=[${cat.total_videos}]`).join("\n") +
+        "\n┣━━━━━━━━✘━━━━━━━━━━☺︎︎\n┣‣ Reply with number to select ╰━━━━━━━━✘━━━━━━━━━━☺︎︎ ";
       
       await api.sendMessage(message, event.threadID, (error, info) => {
         global.GoatBot.onReply.set(info.messageID, {
@@ -123,7 +120,7 @@ module.exports = {
       
       if (!categoryKey) return api.sendMessage("❌ Category expired!", event.threadID, event.messageID);
       
-      const videoRes = await axios.get(`https://album-source-production.up.railway.app/album?category=${encodeURIComponent(categoryKey)}`);
+      const videoRes = await axios.get(`https://nyx-hub.vercel.app/album?category=${encodeURIComponent(categoryKey)}`);
       
       api.sendMessage({
         body: `🎥 ${videoRes.data.category}\n🔢 Position: ${videoRes.data.number}`,
@@ -135,5 +132,3 @@ module.exports = {
     }
   }
 };
-const wrapper = new GoatWrapper(module.exports);
-wrapper.applyNoPrefix({ allowPrefix: true });
