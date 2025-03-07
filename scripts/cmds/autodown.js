@@ -101,7 +101,7 @@ module.exports.onChat = async ({ api, event }) => {
 
     api.sendMessage(
       {
-        body: `😻💖 Successfully downloaded the video!\n🔖 Platform: ${platform}`,
+        body: `🚬👨🏿‍🌾 Successfully downloaded the video!\n🔖 Platform: ${platform}`,
         attachment: [videoStream.data],
       },
       threadID,
