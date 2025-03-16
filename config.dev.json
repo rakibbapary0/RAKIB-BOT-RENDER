@@ -17,36 +17,36 @@
     "ignoreCommand": []
   },
   "adminBot": [
-    "61552422054139",
+    "100011152309303",
     "",
     ""
   ],
   "GOD": [
-    "61552422054139",
+    "100011152309303",
     "",
     ""
   ],
   "vipUser": [
-    "61552422054139",
+    "100011152309303",
     "",
     ""
   ],
   "DEV": [
-    "61552422054139",
+    "100011152309303",
     "",
     ""
   ],
   "whiteListMode": {
     "enable": true,
     "whiteListIds": [
-     "61552422054139",
+     "100011152309303",
      "",
     ""
     ],
     "notes": "If enabled, only the IDs in whiteListIds can use the bot."
   },
   "nickNameBot": "𝐘𝐨𝐮𝐫 𝐕𝐨𝐝𝐫𝐨",
-  "prefix": "👨🏿‍🌾",
+  "prefix": "!",
   "database": {
     "type": "mongodb",
     "uriMongodb": "mongodb+srv://kumarorithi:IDOLL-ANTHONY-URI-12@cluster0.hwu7q.mongodb.net/",
